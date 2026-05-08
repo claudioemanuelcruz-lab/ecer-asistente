@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECER Asistente Virtual</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #004b8d, #0072ce);
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+      overflow: hidden;
+    }
+
+    .header {
+      background: #003f7d;
+      color: white;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 22px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      text-align: center;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      background: #f2f6fb;
+      color: #222;
+      padding: 15px;
+      margin-bottom: 12px;
+      border-radius: 14px;
+      font-size: 16px;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #dcecff;
+    }
+
+    .btn-primary {
+      background: #0072ce;
+      color: white;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .btn-primary:hover {
+      background: #005fa8;
+    }
+
+    .card {
+      background: #f7f9fc;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 16px;
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .back {
+      margin-top: 12px;
+      background: #eeeeee;
+      text-align: center;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #777;
+      padding: 0 20px 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <h1>ECER S.A.C.</h1>
+      <p>Estación de Servicio · San Antonio de los Cobres</p>
+    </div>
+
+    <div class="content" id="languageScreen">
+      <div class="title">🌎 Bienvenido</div>
+      <div class="subtitle">Seleccione su idioma / Choose your language</div>
+
+      <button class="btn" onclick="setLanguage('es')">🇦🇷 Español</button>
+      <button class="btn" onclick="setLanguage('en')">🇬🇧 English</button>
+      <button class="btn" onclick="setLanguage('pt')">🇧🇷 Português</button>
+      <button class="btn" onclick="setLanguage('fr')">🇫🇷 Français</button>
+    </div>
+
+    <div class="content hidden" id="menuScreen">
+      <div class="title" id="menuTitle"></div>
+      <div class="subtitle" id="menuSubtitle"></div>
+
+      <div id="menuButtons"></div>
+
+      <button class="btn back" onclick="goLanguages()">🌎 Cambiar idioma</button>
+    </div>
+
+    <div class="content hidden" id="infoScreen">
+      <div class="title" id="infoTitle"></div>
+      <div class="card" id="infoText"></div>
+      <button class="btn btn-primary" onclick="goMenu()" id="backMenuBtn">Volver al menú</button>
+    </div>
+
+    <div class="footer">
+      Asistente Virtual ECER · Información orientativa sujeta a disponibilidad operativa.
+    </div>
+  </div>
+
+  <script>
+    let lang = 'es';
+
+    const data = {
+      es: {
+        title: '¿En qué podemos ayudarte?',
+        subtitle: 'Seleccioná una opción',
+        back: 'Volver al menú',
+        options: [
+          ['horarios', '🕒 Horarios de atención'],
+          ['combustibles', '⛽ Combustibles disponibles'],
+          ['pagos', '💳 Medios de pago'],
+          ['ubicacion', '📍 Ubicación'],
+          ['turistas', '🏔️ Información para turistas'],
+          ['lubricantes', '🛢️ Lubricantes y productos YPF'],
+          ['emergencias', '🚑 Emergencias'],
+          ['responsable', '📞 Hablar con un responsable']
+        ],
+        info: {
+          horarios: ['Horarios de atención', 'Atendemos todos los días de 06:00 a 22:00 hs. No contamos con turno nocturno.'],
+          combustibles: ['Combustibles disponibles', 'Trabajamos con Nafta Súper, Infinia Nafta, Diesel 500 e Infinia Diesel. La disponibilidad puede variar según stock operativo. Consultá en playa para confirmación actualizada.'],
+          pagos: ['Medios de pago', 'Aceptamos efectivo, tarjetas, QR/App YPF, cuenta corriente autorizada e YPF Ruta sujeto a disponibilidad del sistema.'],
+          ubicacion: ['Ubicación', 'Nos encontramos en San Antonio de los Cobres, Salta. Buscanos como ECER S.A.C. – Estación de Servicio YPF San Antonio de los Cobres.'],
+          turistas: ['Información para turistas', 'Recomendamos cargar combustible antes de continuar viaje, consultar estado de ruta, llevar agua, abrigo y documentación. Por la altura, evitá esfuerzos si presentás malestar.'],
+          lubricantes: ['Lubricantes y productos YPF', 'Contamos con aceites de motor, aceites de caja, refrigerantes, agua destilada, líquido de freno y productos de limpieza automotor, sujetos a stock disponible.'],
+          emergencias: ['Emergencias', 'Ante una emergencia, solicitá ayuda inmediata al personal de la estación. También podés comunicarte con policía, hospital o bomberos de la zona.'],
+          responsable: ['Hablar con un responsable', 'Para consultas especiales, dirigite al personal de playa o al sector administrativo de la estación.']
+        }
+      },
+      en: {
+        title: 'How can we help you?',
+        subtitle: 'Please select an option',
+        back: 'Back to menu',
+        options: [
+          ['horarios', '🕒 Opening hours'],
+          ['combustibles', '⛽ Fuel availability'],
+          ['pagos', '💳 Payment methods'],
+          ['ubicacion', '📍 Location'],
+          ['turistas', '🏔️ Tourist information'],
+          ['lubricantes', '🛢️ YPF lubricants and products'],
+          ['emergencias', '🚑 Emergency information'],
+          ['responsable', '📞 Talk to staff']
+        ],
+        info: {
+          horarios: ['Opening hours', 'We are open every day from 6:00 AM to 10:00 PM. We do not have night service.'],
+          combustibles: ['Fuel availability', 'We offer Nafta Súper, Infinia Nafta, Diesel 500 and Infinia Diesel. Availability may vary depending on current stock. Please ask station staff for updated information.'],
+          pagos: ['Payment methods', 'We accept cash, cards, QR/YPF App, authorized company accounts and YPF Ruta subject to system availability.'],
+          ubicacion: ['Location', 'We are located in San Antonio de los Cobres, Salta. Search for ECER S.A.C. – YPF Service Station San Antonio de los Cobres.'],
+          turistas: ['Tourist information', 'We recommend refueling before continuing your trip, checking road conditions, carrying water, warm clothing and documents. Due to altitude, avoid physical effort if you feel unwell.'],
+          lubricantes: ['YPF lubricants and products', 'We offer engine oils, gearbox oils, coolants, distilled water, brake fluid and automotive cleaning products, subject to stock availability.'],
+          emergencias: ['Emergency information', 'In case of emergency, ask station staff for immediate assistance. You may also contact local police, hospital or firefighters.'],
+          responsable: ['Talk to staff', 'For special requests, please contact station staff or the administrative office.']
+        }
+      },
+      pt: {
+        title: 'Como podemos ajudar?',
+        subtitle: 'Selecione uma opção',
+        back: 'Voltar ao menu',
+        options: [
+          ['horarios', '🕒 Horários de atendimento'],
+          ['combustibles', '⛽ Combustíveis disponíveis'],
+          ['pagos', '💳 Formas de pagamento'],
+          ['ubicacion', '📍 Localização'],
+          ['turistas', '🏔️ Informações para turistas'],
+          ['lubricantes', '🛢️ Lubrificantes e produtos YPF'],
+          ['emergencias', '🚑 Emergências'],
+          ['responsable', '📞 Falar com um responsável']
+        ],
+        info: {
+          horarios: ['Horários de atendimento', 'Atendemos todos os dias das 06:00 às 22:00. Não temos atendimento noturno.'],
+          combustibles: ['Combustíveis disponíveis', 'Trabalhamos com Nafta Súper, Infinia Nafta, Diesel 500 e Infinia Diesel. A disponibilidade pode variar conforme o estoque operacional. Consulte a equipe da estação.'],
+          pagos: ['Formas de pagamento', 'Aceitamos dinheiro, cartões, QR/App YPF, conta corrente autorizada e YPF Ruta sujeito à disponibilidade do sistema.'],
+          ubicacion: ['Localização', 'Estamos em San Antonio de los Cobres, Salta. Procure por ECER S.A.C. – Estação de Serviço YPF San Antonio de los Cobres.'],
+          turistas: ['Informações para turistas', 'Recomendamos abastecer antes de continuar a viagem, consultar o estado das estradas, levar água, agasalho e documentos. Devido à altitude, evite esforço físico se não estiver se sentindo bem.'],
+          lubricantes: ['Lubrificantes e produtos YPF', 'Temos óleos de motor, óleos de caixa, refrigerantes, água destilada, fluido de freio e produtos de limpeza automotiva, sujeitos ao estoque disponível.'],
+          emergencias: ['Emergências', 'Em caso de emergência, peça ajuda imediata à equipe da estação. Também pode contatar polícia, hospital ou bombeiros locais.'],
+          responsable: ['Falar com um responsável', 'Para consultas especiais, fale com a equipe da estação ou com o setor administrativo.']
+        }
+      },
+      fr: {
+        title: 'Comment pouvons-nous vous aider ?',
+        subtitle: 'Sélectionnez une option',
+        back: 'Retour au menu',
+        options: [
+          ['horarios', '🕒 Horaires d’ouverture'],
+          ['combustibles', '⛽ Carburants disponibles'],
+          ['pagos', '💳 Moyens de paiement'],
+          ['ubicacion', '📍 Emplacement'],
+          ['turistas', '🏔️ Informations touristiques'],
+          ['lubricantes', '🛢️ Lubrifiants et produits YPF'],
+          ['emergencias', '🚑 Urgences'],
+          ['responsable', '📞 Parler au personnel']
+        ],
+        info: {
+          horarios: ['Horaires d’ouverture', 'Nous sommes ouverts tous les jours de 06h00 à 22h00. Nous n’avons pas de service de nuit.'],
+          combustibles: ['Carburants disponibles', 'Nous proposons Nafta Súper, Infinia Nafta, Diesel 500 et Infinia Diesel. La disponibilité peut varier selon le stock. Veuillez consulter le personnel de la station.'],
+          pagos: ['Moyens de paiement', 'Nous acceptons les espèces, cartes, QR/App YPF, comptes professionnels autorisés et YPF Ruta selon la disponibilité du système.'],
+          ubicacion: ['Emplacement', 'Nous sommes situés à San Antonio de los Cobres, Salta. Cherchez ECER S.A.C. – Station-service YPF San Antonio de los Cobres.'],
+          turistas: ['Informations touristiques', 'Nous recommandons de faire le plein avant de poursuivre votre voyage, de vérifier l’état des routes, d’emporter de l’eau, des vêtements chauds et vos documents. En raison de l’altitude, évitez les efforts si vous ne vous sentez pas bien.'],
+          lubricantes: ['Lubrifiants et produits YPF', 'Nous proposons huiles moteur, huiles de boîte, liquides de refroidissement, eau distillée, liquide de frein et produits de nettoyage automobile, selon disponibilité.'],
+          emergencias: ['Urgences', 'En cas d’urgence, demandez immédiatement de l’aide au personnel de la station. Vous pouvez aussi contacter la police, l’hôpital ou les pompiers locaux.'],
+          responsable: ['Parler au personnel', 'Pour toute demande particulière, veuillez contacter le personnel de la station ou le bureau administratif.']
+        }
+      }
+    };
+
+    function setLanguage(selected) {
+      lang = selected;
+      buildMenu();
+      document.getElementById('languageScreen').classList.add('hidden');
+      document.getElementById('infoScreen').classList.add('hidden');
+      document.getElementById('menuScreen').classList.remove('hidden');
+    }
+
+    function buildMenu() {
+      const current = data[lang];
+      document.getElementById('menuTitle').innerText = current.title;
+      document.getElementById('menuSubtitle').innerText = current.subtitle;
+      document.getElementById('backMenuBtn').innerText = current.back;
+
+      const menu = document.getElementById('menuButtons');
+      menu.innerHTML = '';
+      current.options.forEach(option => {
+        const button = document.createElement('button');
+        button.className = 'btn';
+        button.innerText = option[1];
+        button.onclick = () => showInfo(option[0]);
+        menu.appendChild(button);
+      });
+    }
+
+    function showInfo(key) {
+      const item = data[lang].info[key];
+      document.getElementById('infoTitle').innerText = item[0];
+      document.getElementById('infoText').innerText = item[1];
+      document.getElementById('menuScreen').classList.add('hidden');
+      document.getElementById('infoScreen').classList.remove('hidden');
+    }
+
+    function goMenu() {
+      document.getElementById('infoScreen').classList.add('hidden');
+      document.getElementById('menuScreen').classList.remove('hidden');
+    }
+
+    function goLanguages() {
+      document.getElementById('menuScreen').classList.add('hidden');
+      document.getElementById('infoScreen').classList.add('hidden');
+      document.getElementById('languageScreen').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
