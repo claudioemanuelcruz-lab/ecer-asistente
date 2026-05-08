@@ -478,9 +478,101 @@
       }
     };
 
-    content.en = content.es;
-    content.pt = content.es;
-    content.fr = content.es;
+    content.en = {
+  mainTitle: "Welcome!<br>ECER Virtual Assistant",
+  mainText: "Your smart guide for fuel, routes, tourism and services during your trip.",
+  searchText: "🔎 How can we help you?",
+  quickTitle: "Quick access",
+  infoTitle: "Information and services",
+  fuelTitle: "Fuel",
+  fuelText: "Available fuel types and operational status.",
+  hoursTitle: "Opening hours",
+  hoursText: "Service and assistance.",
+  tourTitle: "Tourism",
+  tourText: "Recommendations for visitors.",
+  routesTitle: "Routes",
+  routesText: "Road information.",
+  payTitle: "Payment methods",
+  payText: "Accepted payment methods.",
+  emergencyTitle: "Emergencies",
+  emergencyText: "Contacts and assistance.",
+  modals: {
+    combustibles: ["Fuel", "We offer Nafta Súper, Infinia Nafta, Diesel 500 and Infinia Diesel. Availability may vary depending on operational stock."],
+    horarios: ["Opening hours", "Open daily from 6:00 AM to 10:00 PM. No night shift available."],
+    turismo: ["Tourism", "We recommend refueling before continuing your trip. Carry water, warm clothes and documents due to altitude conditions."],
+    rutas: ["Routes", "Always check road conditions before continuing your trip. Drive carefully during snow or rain."],
+    pagos: ["Payment methods", "We accept cash, cards, QR/YPF App and authorized company accounts."],
+    emergencias: ["Emergencies", "In case of emergency, contact station staff immediately."],
+    estacion: ["Our station", "ECER S.A.C. provides fuel service, tourist assistance and YPF products."],
+    shop: ["Shop", "Products, beverages, lubricants and travel supplies available."],
+    contacto: ["Contact", "Please contact station staff for additional assistance."],
+    ayuda: ["Virtual Assistant", "Select an option from the menu to receive quick information."]
+  }
+};
+
+content.pt = {
+  mainTitle: "Bem-vindo!<br>Assistente Virtual ECER",
+  mainText: "Seu guia inteligente para combustível, rotas, turismo e serviços durante sua viagem.",
+  searchText: "🔎 Como podemos ajudá-lo?",
+  quickTitle: "Acessos rápidos",
+  infoTitle: "Informações e serviços",
+  fuelTitle: "Combustíveis",
+  fuelText: "Tipos disponíveis e status operacional.",
+  hoursTitle: "Horários",
+  hoursText: "Atendimento e serviços.",
+  tourTitle: "Turismo",
+  tourText: "Recomendações para visitantes.",
+  routesTitle: "Rotas",
+  routesText: "Informações rodoviárias.",
+  payTitle: "Pagamentos",
+  payText: "Métodos de pagamento aceitos.",
+  emergencyTitle: "Emergências",
+  emergencyText: "Contatos e assistência.",
+  modals: {
+    combustibles: ["Combustíveis", "Trabalhamos com Nafta Súper, Infinia Nafta, Diesel 500 e Infinia Diesel."],
+    horarios: ["Horários", "Atendimento diário das 06:00 às 22:00."],
+    turismo: ["Turismo", "Recomendamos abastecer antes de continuar sua viagem."],
+    rutas: ["Rotas", "Verifique sempre as condições da estrada antes de viajar."],
+    pagos: ["Pagamentos", "Aceitamos dinheiro, cartões, QR/App YPF e contas autorizadas."],
+    emergencias: ["Emergências", "Em caso de emergência, entre em contato com a equipe da estação."],
+    estacion: ["Nossa estação", "Serviço de combustível e assistência ao viajante."],
+    shop: ["Loja", "Produtos, bebidas e suprimentos para viagem."],
+    contacto: ["Contato", "Entre em contato com a equipe da estação."],
+    ayuda: ["Assistente Virtual", "Selecione uma opção do menu."]
+  }
+};
+
+content.fr = {
+  mainTitle: "Bienvenue !<br>Assistant Virtuel ECER",
+  mainText: "Votre guide intelligent pour carburant, routes, tourisme et services pendant votre voyage.",
+  searchText: "🔎 Comment pouvons-nous vous aider ?",
+  quickTitle: "Accès rapides",
+  infoTitle: "Informations et services",
+  fuelTitle: "Carburants",
+  fuelText: "Types disponibles et état opérationnel.",
+  hoursTitle: "Horaires",
+  hoursText: "Service et assistance.",
+  tourTitle: "Tourisme",
+  tourText: "Recommandations pour les visiteurs.",
+  routesTitle: "Routes",
+  routesText: "Informations routières.",
+  payTitle: "Paiements",
+  payText: "Moyens de paiement acceptés.",
+  emergencyTitle: "Urgences",
+  emergencyText: "Contacts et assistance.",
+  modals: {
+    combustibles: ["Carburants", "Nous proposons Nafta Súper, Infinia Nafta, Diesel 500 et Infinia Diesel."],
+    horarios: ["Horaires", "Ouvert tous les jours de 06h00 à 22h00."],
+    turismo: ["Tourisme", "Nous recommandons de faire le plein avant de continuer votre voyage."],
+    rutas: ["Routes", "Vérifiez toujours les conditions routières avant de voyager."],
+    pagos: ["Paiements", "Nous acceptons espèces, cartes et QR/App YPF."],
+    emergencias: ["Urgences", "En cas d'urgence, contactez immédiatement le personnel."],
+    estacion: ["Notre station", "Service de carburant et assistance aux voyageurs."],
+    shop: ["Boutique", "Produits, boissons et fournitures de voyage."],
+    contacto: ["Contact", "Veuillez contacter le personnel de la station."],
+    ayuda: ["Assistant Virtuel", "Sélectionnez une option du menu."]
+  }
+};
 
     function changeLanguage() {
       currentLang = document.getElementById("language").value;
