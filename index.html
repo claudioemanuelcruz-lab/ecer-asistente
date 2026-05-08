@@ -3,310 +3,517 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ECER Asistente Virtual</title>
+  <title>Asistente Virtual ECER</title>
+
   <style>
     * {
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      background: linear-gradient(135deg, #004b8d, #0072ce);
-      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
       min-height: 100vh;
+      color: #fff;
+      background:
+        linear-gradient(rgba(0, 30, 70, 0.72), rgba(0, 22, 55, 0.95)),
+        url("fondo-ecer.jpg.png");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1180px;
+      margin: auto;
+      padding: 24px 0 40px;
+    }
+
+    header {
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 35px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand h2 {
+      font-size: 32px;
+      letter-spacing: 1px;
+    }
+
+    .brand span {
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    select {
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: bold;
+      outline: none;
+    }
+
+    option {
+      color: #000;
+    }
+
+    .hero {
+      max-width: 680px;
+      margin-bottom: 42px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      line-height: 1.5;
+      opacity: 0.95;
+      margin-bottom: 22px;
+    }
+
+    .search {
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 16px 18px;
+      max-width: 420px;
+      color: #fff;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    .section-title {
+      font-size: 22px;
+      margin: 28px 0 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+    }
+
+    .grid-info {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: rgba(0, 70, 150, 0.42);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 18px;
+      padding: 20px;
+      min-height: 150px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.25);
+      transition: 0.25s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      background: rgba(0, 105, 210, 0.55);
+    }
+
+    .icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 14px;
+      line-height: 1.4;
+      opacity: 0.9;
+    }
+
+    .status {
+      margin-top: 26px;
+      background: rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 18px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      backdrop-filter: blur(10px);
+    }
+
+    .status-item {
+      background: rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .green {
+      color: #4cff7b;
+      font-weight: bold;
+    }
+
+    .red {
+      color: #ff6969;
+      font-weight: bold;
+    }
+
+    .assistant-box {
+      margin-top: 32px;
+      background: rgba(0, 55, 130, 0.45);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 22px;
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      backdrop-filter: blur(10px);
+    }
+
+    .assistant-box h3 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .assistant-box p {
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+
+    .btn {
+      background: #006cff;
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      padding: 16px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      min-width: 220px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
       justify-content: center;
       align-items: center;
-      padding: 16px;
+      padding: 18px;
+      z-index: 99;
     }
 
-    .app {
+    .modal-content {
       width: 100%;
-      max-width: 430px;
-      background: #ffffff;
-      border-radius: 24px;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.25);
-      overflow: hidden;
+      max-width: 560px;
+      background: #062a56;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
     }
 
-    .header {
-      background: #003f7d;
-      color: white;
-      padding: 24px 20px;
-      text-align: center;
+    .modal-content h2 {
+      margin-bottom: 14px;
     }
 
-    .header h1 {
-      margin: 0;
-      font-size: 24px;
+    .modal-content p {
+      line-height: 1.6;
+      opacity: 0.95;
+      white-space: pre-line;
     }
 
-    .header p {
-      margin: 8px 0 0;
+    .close {
+      margin-top: 22px;
+      width: 100%;
+      background: #fff;
+      color: #003b7a;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: 34px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
       font-size: 14px;
       opacity: 0.9;
     }
 
-    .content {
-      padding: 22px;
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid-info {
+        grid-template-columns: 1fr;
+      }
+
+      .status {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero h1 {
+        font-size: 38px;
+      }
+
+      .assistant-box {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .btn {
+        width: 100%;
+      }
     }
 
-    .title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 14px;
-      text-align: center;
-    }
+    @media (max-width: 520px) {
+      header {
+        align-items: flex-start;
+        gap: 16px;
+        flex-direction: column;
+      }
 
-    .subtitle {
-      font-size: 14px;
-      text-align: center;
-      color: #555;
-      margin-bottom: 20px;
-    }
+      .brand h2 {
+        font-size: 26px;
+      }
 
-    .btn {
-      width: 100%;
-      border: none;
-      background: #f2f6fb;
-      color: #222;
-      padding: 15px;
-      margin-bottom: 12px;
-      border-radius: 14px;
-      font-size: 16px;
-      text-align: left;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+      .hero h1 {
+        font-size: 34px;
+      }
 
-    .btn:hover {
-      background: #dcecff;
-    }
+      .grid {
+        grid-template-columns: 1fr;
+      }
 
-    .btn-primary {
-      background: #0072ce;
-      color: white;
-      text-align: center;
-      font-weight: bold;
-    }
+      .status {
+        grid-template-columns: 1fr;
+      }
 
-    .btn-primary:hover {
-      background: #005fa8;
-    }
-
-    .card {
-      background: #f7f9fc;
-      border-radius: 18px;
-      padding: 18px;
-      margin-bottom: 16px;
-      line-height: 1.5;
-      font-size: 15px;
-    }
-
-    .back {
-      margin-top: 12px;
-      background: #eeeeee;
-      text-align: center;
-    }
-
-    .footer {
-      text-align: center;
-      font-size: 12px;
-      color: #777;
-      padding: 0 20px 20px;
-    }
-
-    .hidden {
-      display: none;
+      body {
+        background-attachment: scroll;
+      }
     }
   </style>
 </head>
+
 <body>
-  <div class="app">
-    <div class="header">
-      <h1>ECER S.A.C.</h1>
-      <p>Estación de Servicio · San Antonio de los Cobres</p>
-    </div>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <h2>YPF</h2>
+        <span>ECER S.A.C. · San Antonio de los Cobres</span>
+      </div>
 
-    <div class="content" id="languageScreen">
-      <div class="title">🌎 Bienvenido</div>
-      <div class="subtitle">Seleccione su idioma / Choose your language</div>
+      <select id="language" onchange="changeLanguage()">
+        <option value="es">🇦🇷 Español</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="pt">🇧🇷 Português</option>
+        <option value="fr">🇫🇷 Français</option>
+      </select>
+    </header>
 
-      <button class="btn" onclick="setLanguage('es')">🇦🇷 Español</button>
-      <button class="btn" onclick="setLanguage('en')">🇬🇧 English</button>
-      <button class="btn" onclick="setLanguage('pt')">🇧🇷 Português</button>
-      <button class="btn" onclick="setLanguage('fr')">🇫🇷 Français</button>
-    </div>
+    <section class="hero">
+      <h1 id="mainTitle">¡Bienvenido!<br>Asistente Virtual ECER</h1>
+      <p id="mainText">Tu guía inteligente para combustible, rutas, turismo y servicios durante tu viaje.</p>
+      <div class="search" id="searchText">🔎 ¿En qué podemos ayudarte?</div>
+    </section>
 
-    <div class="content hidden" id="menuScreen">
-      <div class="title" id="menuTitle"></div>
-      <div class="subtitle" id="menuSubtitle"></div>
+    <h2 class="section-title" id="quickTitle">Accesos rápidos</h2>
 
-      <div id="menuButtons"></div>
+    <section class="grid">
+      <div class="card" onclick="openModal('combustibles')">
+        <div class="icon">⛽</div>
+        <h3 id="fuelTitle">Combustibles</h3>
+        <p id="fuelText">Tipos disponibles y estado operativo.</p>
+      </div>
 
-      <button class="btn back" onclick="goLanguages()">🌎 Cambiar idioma</button>
-    </div>
+      <div class="card" onclick="openModal('horarios')">
+        <div class="icon">🕒</div>
+        <h3 id="hoursTitle">Horarios</h3>
+        <p id="hoursText">Atención y servicios.</p>
+      </div>
 
-    <div class="content hidden" id="infoScreen">
-      <div class="title" id="infoTitle"></div>
-      <div class="card" id="infoText"></div>
-      <button class="btn btn-primary" onclick="goMenu()" id="backMenuBtn">Volver al menú</button>
-    </div>
+      <div class="card" onclick="openModal('turismo')">
+        <div class="icon">🏔️</div>
+        <h3 id="tourTitle">Turismo</h3>
+        <p id="tourText">Recomendaciones para visitantes.</p>
+      </div>
 
-    <div class="footer">
-      Asistente Virtual ECER · Información orientativa sujeta a disponibilidad operativa.
+      <div class="card" onclick="openModal('rutas')">
+        <div class="icon">🛣️</div>
+        <h3 id="routesTitle">Rutas</h3>
+        <p id="routesText">Información vial orientativa.</p>
+      </div>
+
+      <div class="card" onclick="openModal('pagos')">
+        <div class="icon">💳</div>
+        <h3 id="payTitle">Medios de pago</h3>
+        <p id="payText">Formas de pago aceptadas.</p>
+      </div>
+
+      <div class="card" onclick="openModal('emergencias')">
+        <div class="icon">🚑</div>
+        <h3 id="emergencyTitle">Emergencias</h3>
+        <p id="emergencyText">Contactos y asistencia.</p>
+      </div>
+    </section>
+
+    <h2 class="section-title" id="infoTitle">Información y servicios</h2>
+
+    <section class="grid-info">
+      <div class="card" onclick="openModal('estacion')">
+        <div class="icon">🏪</div>
+        <h3>Nuestra estación</h3>
+        <p>Servicios, instalaciones y atención al cliente.</p>
+      </div>
+
+      <div class="card" onclick="openModal('shop')">
+        <div class="icon">🛒</div>
+        <h3>Shop</h3>
+        <p>Productos, bebidas, lubricantes y más.</p>
+      </div>
+
+      <div class="card" onclick="openModal('contacto')">
+        <div class="icon">📞</div>
+        <h3>Contacto</h3>
+        <p>Comunicate con personal de la estación.</p>
+      </div>
+    </section>
+
+    <h2 class="section-title">Estado actual de la estación</h2>
+
+    <section class="status">
+      <div class="status-item">⛽ Infinia<br><span class="green">● Disponible</span></div>
+      <div class="status-item">⛽ Nafta Súper<br><span class="green">● Disponible</span></div>
+      <div class="status-item">⛽ Infinia Diesel<br><span class="green">● Disponible</span></div>
+      <div class="status-item">⛽ Diesel 500<br><span class="green">● Disponible</span></div>
+    </section>
+
+    <section class="assistant-box">
+      <div>
+        <h3>🤖 ¿Necesitás ayuda?</h3>
+        <p>Este asistente brinda información rápida para turistas, clientes y transportistas.</p>
+      </div>
+      <button class="btn" onclick="openModal('ayuda')">Preguntarle al asistente</button>
+    </section>
+
+    <footer>
+      <div>
+        <strong>ECER - Estación de Servicio</strong><br>
+        San Antonio de los Cobres, Salta, Argentina
+      </div>
+      <div>
+        Tu viaje, nuestra energía.
+      </div>
+    </footer>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2 id="modalTitle"></h2>
+      <p id="modalText"></p>
+      <button class="close" onclick="closeModal()">Cerrar</button>
     </div>
   </div>
 
   <script>
-    let lang = 'es';
+    let currentLang = "es";
 
-    const data = {
+    const content = {
       es: {
-        title: '¿En qué podemos ayudarte?',
-        subtitle: 'Seleccioná una opción',
-        back: 'Volver al menú',
-        options: [
-          ['horarios', '🕒 Horarios de atención'],
-          ['combustibles', '⛽ Combustibles disponibles'],
-          ['pagos', '💳 Medios de pago'],
-          ['ubicacion', '📍 Ubicación'],
-          ['turistas', '🏔️ Información para turistas'],
-          ['lubricantes', '🛢️ Lubricantes y productos YPF'],
-          ['emergencias', '🚑 Emergencias'],
-          ['responsable', '📞 Hablar con un responsable']
-        ],
-        info: {
-          horarios: ['Horarios de atención', 'Atendemos todos los días de 06:00 a 22:00 hs. No contamos con turno nocturno.'],
-          combustibles: ['Combustibles disponibles', 'Trabajamos con Nafta Súper, Infinia Nafta, Diesel 500 e Infinia Diesel. La disponibilidad puede variar según stock operativo. Consultá en playa para confirmación actualizada.'],
-          pagos: ['Medios de pago', 'Aceptamos efectivo, tarjetas, QR/App YPF, cuenta corriente autorizada e YPF Ruta sujeto a disponibilidad del sistema.'],
-          ubicacion: ['Ubicación', 'Nos encontramos en San Antonio de los Cobres, Salta. Buscanos como ECER S.A.C. – Estación de Servicio YPF San Antonio de los Cobres.'],
-          turistas: ['Información para turistas', 'Recomendamos cargar combustible antes de continuar viaje, consultar estado de ruta, llevar agua, abrigo y documentación. Por la altura, evitá esfuerzos si presentás malestar.'],
-          lubricantes: ['Lubricantes y productos YPF', 'Contamos con aceites de motor, aceites de caja, refrigerantes, agua destilada, líquido de freno y productos de limpieza automotor, sujetos a stock disponible.'],
-          emergencias: ['Emergencias', 'Ante una emergencia, solicitá ayuda inmediata al personal de la estación. También podés comunicarte con policía, hospital o bomberos de la zona.'],
-          responsable: ['Hablar con un responsable', 'Para consultas especiales, dirigite al personal de playa o al sector administrativo de la estación.']
-        }
-      },
-      en: {
-        title: 'How can we help you?',
-        subtitle: 'Please select an option',
-        back: 'Back to menu',
-        options: [
-          ['horarios', '🕒 Opening hours'],
-          ['combustibles', '⛽ Fuel availability'],
-          ['pagos', '💳 Payment methods'],
-          ['ubicacion', '📍 Location'],
-          ['turistas', '🏔️ Tourist information'],
-          ['lubricantes', '🛢️ YPF lubricants and products'],
-          ['emergencias', '🚑 Emergency information'],
-          ['responsable', '📞 Talk to staff']
-        ],
-        info: {
-          horarios: ['Opening hours', 'We are open every day from 6:00 AM to 10:00 PM. We do not have night service.'],
-          combustibles: ['Fuel availability', 'We offer Nafta Súper, Infinia Nafta, Diesel 500 and Infinia Diesel. Availability may vary depending on current stock. Please ask station staff for updated information.'],
-          pagos: ['Payment methods', 'We accept cash, cards, QR/YPF App, authorized company accounts and YPF Ruta subject to system availability.'],
-          ubicacion: ['Location', 'We are located in San Antonio de los Cobres, Salta. Search for ECER S.A.C. – YPF Service Station San Antonio de los Cobres.'],
-          turistas: ['Tourist information', 'We recommend refueling before continuing your trip, checking road conditions, carrying water, warm clothing and documents. Due to altitude, avoid physical effort if you feel unwell.'],
-          lubricantes: ['YPF lubricants and products', 'We offer engine oils, gearbox oils, coolants, distilled water, brake fluid and automotive cleaning products, subject to stock availability.'],
-          emergencias: ['Emergency information', 'In case of emergency, ask station staff for immediate assistance. You may also contact local police, hospital or firefighters.'],
-          responsable: ['Talk to staff', 'For special requests, please contact station staff or the administrative office.']
-        }
-      },
-      pt: {
-        title: 'Como podemos ajudar?',
-        subtitle: 'Selecione uma opção',
-        back: 'Voltar ao menu',
-        options: [
-          ['horarios', '🕒 Horários de atendimento'],
-          ['combustibles', '⛽ Combustíveis disponíveis'],
-          ['pagos', '💳 Formas de pagamento'],
-          ['ubicacion', '📍 Localização'],
-          ['turistas', '🏔️ Informações para turistas'],
-          ['lubricantes', '🛢️ Lubrificantes e produtos YPF'],
-          ['emergencias', '🚑 Emergências'],
-          ['responsable', '📞 Falar com um responsável']
-        ],
-        info: {
-          horarios: ['Horários de atendimento', 'Atendemos todos os dias das 06:00 às 22:00. Não temos atendimento noturno.'],
-          combustibles: ['Combustíveis disponíveis', 'Trabalhamos com Nafta Súper, Infinia Nafta, Diesel 500 e Infinia Diesel. A disponibilidade pode variar conforme o estoque operacional. Consulte a equipe da estação.'],
-          pagos: ['Formas de pagamento', 'Aceitamos dinheiro, cartões, QR/App YPF, conta corrente autorizada e YPF Ruta sujeito à disponibilidade do sistema.'],
-          ubicacion: ['Localização', 'Estamos em San Antonio de los Cobres, Salta. Procure por ECER S.A.C. – Estação de Serviço YPF San Antonio de los Cobres.'],
-          turistas: ['Informações para turistas', 'Recomendamos abastecer antes de continuar a viagem, consultar o estado das estradas, levar água, agasalho e documentos. Devido à altitude, evite esforço físico se não estiver se sentindo bem.'],
-          lubricantes: ['Lubrificantes e produtos YPF', 'Temos óleos de motor, óleos de caixa, refrigerantes, água destilada, fluido de freio e produtos de limpeza automotiva, sujeitos ao estoque disponível.'],
-          emergencias: ['Emergências', 'Em caso de emergência, peça ajuda imediata à equipe da estação. Também pode contatar polícia, hospital ou bombeiros locais.'],
-          responsable: ['Falar com um responsável', 'Para consultas especiais, fale com a equipe da estação ou com o setor administrativo.']
-        }
-      },
-      fr: {
-        title: 'Comment pouvons-nous vous aider ?',
-        subtitle: 'Sélectionnez une option',
-        back: 'Retour au menu',
-        options: [
-          ['horarios', '🕒 Horaires d’ouverture'],
-          ['combustibles', '⛽ Carburants disponibles'],
-          ['pagos', '💳 Moyens de paiement'],
-          ['ubicacion', '📍 Emplacement'],
-          ['turistas', '🏔️ Informations touristiques'],
-          ['lubricantes', '🛢️ Lubrifiants et produits YPF'],
-          ['emergencias', '🚑 Urgences'],
-          ['responsable', '📞 Parler au personnel']
-        ],
-        info: {
-          horarios: ['Horaires d’ouverture', 'Nous sommes ouverts tous les jours de 06h00 à 22h00. Nous n’avons pas de service de nuit.'],
-          combustibles: ['Carburants disponibles', 'Nous proposons Nafta Súper, Infinia Nafta, Diesel 500 et Infinia Diesel. La disponibilité peut varier selon le stock. Veuillez consulter le personnel de la station.'],
-          pagos: ['Moyens de paiement', 'Nous acceptons les espèces, cartes, QR/App YPF, comptes professionnels autorisés et YPF Ruta selon la disponibilité du système.'],
-          ubicacion: ['Emplacement', 'Nous sommes situés à San Antonio de los Cobres, Salta. Cherchez ECER S.A.C. – Station-service YPF San Antonio de los Cobres.'],
-          turistas: ['Informations touristiques', 'Nous recommandons de faire le plein avant de poursuivre votre voyage, de vérifier l’état des routes, d’emporter de l’eau, des vêtements chauds et vos documents. En raison de l’altitude, évitez les efforts si vous ne vous sentez pas bien.'],
-          lubricantes: ['Lubrifiants et produits YPF', 'Nous proposons huiles moteur, huiles de boîte, liquides de refroidissement, eau distillée, liquide de frein et produits de nettoyage automobile, selon disponibilité.'],
-          emergencias: ['Urgences', 'En cas d’urgence, demandez immédiatement de l’aide au personnel de la station. Vous pouvez aussi contacter la police, l’hôpital ou les pompiers locaux.'],
-          responsable: ['Parler au personnel', 'Pour toute demande particulière, veuillez contacter le personnel de la station ou le bureau administratif.']
+        mainTitle: "¡Bienvenido!<br>Asistente Virtual ECER",
+        mainText: "Tu guía inteligente para combustible, rutas, turismo y servicios durante tu viaje.",
+        searchText: "🔎 ¿En qué podemos ayudarte?",
+        quickTitle: "Accesos rápidos",
+        infoTitle: "Información y servicios",
+        fuelTitle: "Combustibles",
+        fuelText: "Tipos disponibles y estado operativo.",
+        hoursTitle: "Horarios",
+        hoursText: "Atención y servicios.",
+        tourTitle: "Turismo",
+        tourText: "Recomendaciones para visitantes.",
+        routesTitle: "Rutas",
+        routesText: "Información vial orientativa.",
+        payTitle: "Medios de pago",
+        payText: "Formas de pago aceptadas.",
+        emergencyTitle: "Emergencias",
+        emergencyText: "Contactos y asistencia.",
+        modals: {
+          combustibles: ["Combustibles", "Trabajamos con Nafta Súper, Infinia Nafta, Diesel 500 e Infinia Diesel. La disponibilidad puede variar según stock operativo. Consultá al personal para confirmar el estado actualizado."],
+          horarios: ["Horarios", "Atención todos los días de 06:00 a 22:00 hs. No contamos con turno nocturno."],
+          turismo: ["Turismo", "Recomendamos cargar combustible antes de continuar viaje, llevar agua, abrigo y documentación. Por la altura, evitá esfuerzos si presentás malestar."],
+          rutas: ["Rutas", "Consultá siempre el estado de la ruta antes de continuar viaje. En época de nieve o lluvia, circulá con extrema precaución."],
+          pagos: ["Medios de pago", "Aceptamos efectivo, tarjetas, QR/App YPF, cuenta corriente autorizada e YPF Ruta sujeto a disponibilidad del sistema."],
+          emergencias: ["Emergencias", "Ante una emergencia, solicitá ayuda inmediata al personal de la estación. También podés comunicarte con policía, hospital o bomberos de la zona."],
+          estacion: ["Nuestra estación", "ECER S.A.C. brinda servicio de combustible, atención al viajero, productos YPF y asistencia básica para turistas y transportistas."],
+          shop: ["Shop", "Contamos con productos, bebidas, lubricantes, refrigerantes, agua destilada y artículos para el viaje, sujetos a stock disponible."],
+          contacto: ["Contacto", "Para consultas especiales, dirigite al personal de playa o al sector administrativo de la estación."],
+          ayuda: ["Asistente Virtual", "Seleccioná una opción del menú principal para recibir información rápida. Próximamente podremos sumar WhatsApp, mapas, clima y consultas automáticas."]
         }
       }
     };
 
-    function setLanguage(selected) {
-      lang = selected;
-      buildMenu();
-      document.getElementById('languageScreen').classList.add('hidden');
-      document.getElementById('infoScreen').classList.add('hidden');
-      document.getElementById('menuScreen').classList.remove('hidden');
+    content.en = content.es;
+    content.pt = content.es;
+    content.fr = content.es;
+
+    function changeLanguage() {
+      currentLang = document.getElementById("language").value;
+      const t = content[currentLang];
+
+      document.getElementById("mainTitle").innerHTML = t.mainTitle;
+      document.getElementById("mainText").innerText = t.mainText;
+      document.getElementById("searchText").innerText = t.searchText;
+      document.getElementById("quickTitle").innerText = t.quickTitle;
+      document.getElementById("infoTitle").innerText = t.infoTitle;
+      document.getElementById("fuelTitle").innerText = t.fuelTitle;
+      document.getElementById("fuelText").innerText = t.fuelText;
+      document.getElementById("hoursTitle").innerText = t.hoursTitle;
+      document.getElementById("hoursText").innerText = t.hoursText;
+      document.getElementById("tourTitle").innerText = t.tourTitle;
+      document.getElementById("tourText").innerText = t.tourText;
+      document.getElementById("routesTitle").innerText = t.routesTitle;
+      document.getElementById("routesText").innerText = t.routesText;
+      document.getElementById("payTitle").innerText = t.payTitle;
+      document.getElementById("payText").innerText = t.payText;
+      document.getElementById("emergencyTitle").innerText = t.emergencyTitle;
+      document.getElementById("emergencyText").innerText = t.emergencyText;
     }
 
-    function buildMenu() {
-      const current = data[lang];
-      document.getElementById('menuTitle').innerText = current.title;
-      document.getElementById('menuSubtitle').innerText = current.subtitle;
-      document.getElementById('backMenuBtn').innerText = current.back;
-
-      const menu = document.getElementById('menuButtons');
-      menu.innerHTML = '';
-      current.options.forEach(option => {
-        const button = document.createElement('button');
-        button.className = 'btn';
-        button.innerText = option[1];
-        button.onclick = () => showInfo(option[0]);
-        menu.appendChild(button);
-      });
+    function openModal(key) {
+      const item = content[currentLang].modals[key];
+      document.getElementById("modalTitle").innerText = item[0];
+      document.getElementById("modalText").innerText = item[1];
+      document.getElementById("modal").style.display = "flex";
     }
 
-    function showInfo(key) {
-      const item = data[lang].info[key];
-      document.getElementById('infoTitle').innerText = item[0];
-      document.getElementById('infoText').innerText = item[1];
-      document.getElementById('menuScreen').classList.add('hidden');
-      document.getElementById('infoScreen').classList.remove('hidden');
-    }
-
-    function goMenu() {
-      document.getElementById('infoScreen').classList.add('hidden');
-      document.getElementById('menuScreen').classList.remove('hidden');
-    }
-
-    function goLanguages() {
-      document.getElementById('menuScreen').classList.add('hidden');
-      document.getElementById('infoScreen').classList.add('hidden');
-      document.getElementById('languageScreen').classList.remove('hidden');
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
     }
   </script>
 </body>
