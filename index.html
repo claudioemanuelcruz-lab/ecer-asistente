@@ -599,60 +599,246 @@ content.fr = {
       document.getElementById("emergencyText").innerText = t.emergencyText;
     }
 function openModal(key) {
+
   if (key === "turismo") {
-    document.getElementById("modalTitle").innerText = "Turismo y orientación para viajeros";
 
-    document.getElementById("modalText").innerHTML = `
-      <strong>📍 Usted se encuentra en San Antonio de los Cobres, Salta.</strong><br><br>
+    const turismoContent = {
+      es: {
+        title: "Turismo y orientación para viajeros",
+        html: `
+          <strong>📍 Usted se encuentra en San Antonio de los Cobres, Salta.</strong><br><br>
 
-      <iframe 
-        src="https://www.google.com/maps?q=San%20Antonio%20de%20los%20Cobres%20Salta&output=embed"
-        width="100%" 
-        height="260" 
-        style="border:0; border-radius:16px; margin:12px 0;" 
-        allowfullscreen="" 
-        loading="lazy">
-      </iframe>
+          <iframe
+            src="https://www.google.com/maps?q=San%20Antonio%20de%20los%20Cobres%20Salta&output=embed"
+            width="100%"
+            height="260"
+            style="border:0; border-radius:16px; margin:12px 0;"
+            allowfullscreen=""
+            loading="lazy">
+          </iframe>
 
-      <strong>⚠️ Información importante:</strong><br>
-      En San Antonio de los Cobres finaliza la ruta asfaltada. Desde este punto, los caminos hacia destinos turísticos continúan por ripio.<br><br>
+          <strong>⚠️ IMPORTANTE</strong><br><br>
 
-      Se recomienda cargar combustible antes de continuar viaje, llevar agua, abrigo, documentación, revisar neumáticos y consultar el estado del clima y rutas.<br><br>
+          En San Antonio de los Cobres finaliza la ruta asfaltada.<br><br>
+          Desde este punto, todos los caminos turísticos continúan por tierra.<br><br>
 
-      <strong>🗺 Destinos principales:</strong><br><br>
+          Recomendamos:<br><br>
+          • cargar combustible antes de continuar viaje<br>
+          • revisar neumáticos<br>
+          • llevar agua y abrigo<br>
+          • consultar estado climático<br>
+          • circular con precaución<br><br>
 
-      🚂 <strong>Viaducto La Polvorilla</strong><br>
-      <a href="https://www.google.com/maps/search/?api=1&query=Viaducto+La+Polvorilla" target="_blank">Abrir en Google Maps</a><br><br>
+          <strong>🗺 Destinos principales:</strong><br><br>
 
-      🧂 <strong>Salinas Grandes</strong><br>
-      <a href="https://www.google.com/maps/search/?api=1&query=Salinas+Grandes+Jujuy" target="_blank">Abrir en Google Maps</a><br><br>
+          🚂 <strong>Viaducto La Polvorilla</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Viaducto+La+Polvorilla" target="_blank">Abrir en Google Maps</a><br><br>
 
-      🏔️ <strong>La Poma</strong><br>
-      <a href="https://www.google.com/maps/search/?api=1&query=La+Poma+Salta" target="_blank">Abrir en Google Maps</a><br><br>
+          🧂 <strong>Salinas Grandes</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Salinas+Grandes+Jujuy" target="_blank">Abrir en Google Maps</a><br><br>
 
-      🇨🇱 <strong>Paso de Jama</strong><br>
-      <a href="https://www.google.com/maps/search/?api=1&query=Paso+de+Jama" target="_blank">Abrir en Google Maps</a><br><br>
+          🏔️ <strong>La Poma</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=La+Poma+Salta" target="_blank">Abrir en Google Maps</a><br><br>
 
-      <strong>🏨 Alojamiento en San Antonio de los Cobres:</strong><br>
-      • Hotel de las Nubes<br>
-      • Hosterías y alojamientos locales<br>
-      • Hospedajes familiares<br><br>
+          🇨🇱 <strong>Paso de Jama</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Paso+de+Jama" target="_blank">Abrir en Google Maps</a><br><br>
 
-      <a href="https://www.google.com/maps/search/?api=1&query=alojamiento+San+Antonio+de+los+Cobres" target="_blank">Ver alojamientos en Google Maps</a><br><br>
+          <strong>🏨 Alojamiento:</strong><br><br>
+          • Hotel de las Nubes<br>
+          • Hosterías locales<br>
+          • Hospedajes familiares<br><br>
 
-      <strong>🍽️ Lugares para comer:</strong><br>
-      • Comedores regionales<br>
-      • Restaurantes locales<br>
-      • Confiterías y casas de comida<br><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=alojamiento+San+Antonio+de+los+Cobres" target="_blank">Ver alojamientos</a><br><br>
 
-      <a href="https://www.google.com/maps/search/?api=1&query=restaurantes+San+Antonio+de+los+Cobres" target="_blank">Ver lugares para comer en Google Maps</a>
-    `;
+          <strong>🍽️ Lugares para comer:</strong><br><br>
+          • Restaurantes regionales<br>
+          • Comedores locales<br>
+          • Cafeterías y casas de comida<br><br>
 
+          <a href="https://www.google.com/maps/search/?api=1&query=restaurantes+San+Antonio+de+los+Cobres" target="_blank">Ver restaurantes</a>
+        `
+      },
+
+      en: {
+        title: "Tourism and travel guidance",
+        html: `
+          <strong>📍 You are in San Antonio de los Cobres, Salta.</strong><br><br>
+
+          <iframe
+            src="https://www.google.com/maps?q=San%20Antonio%20de%20los%20Cobres%20Salta&output=embed"
+            width="100%"
+            height="260"
+            style="border:0; border-radius:16px; margin:12px 0;"
+            allowfullscreen=""
+            loading="lazy">
+          </iframe>
+
+          <strong>⚠️ IMPORTANT</strong><br><br>
+
+          The paved road ends in San Antonio de los Cobres.<br><br>
+          From this point onward, tourist roads continue as dirt roads.<br><br>
+
+          We recommend:<br><br>
+          • refueling before continuing your trip<br>
+          • checking your tires<br>
+          • carrying water and warm clothing<br>
+          • checking weather conditions<br>
+          • driving carefully<br><br>
+
+          <strong>🗺 Main destinations:</strong><br><br>
+
+          🚂 <strong>La Polvorilla Viaduct</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Viaducto+La+Polvorilla" target="_blank">Open in Google Maps</a><br><br>
+
+          🧂 <strong>Salinas Grandes</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Salinas+Grandes+Jujuy" target="_blank">Open in Google Maps</a><br><br>
+
+          🏔️ <strong>La Poma</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=La+Poma+Salta" target="_blank">Open in Google Maps</a><br><br>
+
+          🇨🇱 <strong>Jama Pass</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Paso+de+Jama" target="_blank">Open in Google Maps</a><br><br>
+
+          <strong>🏨 Accommodation:</strong><br><br>
+          • Hotel de las Nubes<br>
+          • Local hostels<br>
+          • Family lodgings<br><br>
+
+          <a href="https://www.google.com/maps/search/?api=1&query=accommodation+San+Antonio+de+los+Cobres" target="_blank">View accommodation</a><br><br>
+
+          <strong>🍽️ Places to eat:</strong><br><br>
+          • Regional restaurants<br>
+          • Local diners<br>
+          • Cafés and food houses<br><br>
+
+          <a href="https://www.google.com/maps/search/?api=1&query=restaurants+San+Antonio+de+los+Cobres" target="_blank">View restaurants</a>
+        `
+      },
+
+      pt: {
+        title: "Turismo e orientação para viajantes",
+        html: `
+          <strong>📍 Você está em San Antonio de los Cobres, Salta.</strong><br><br>
+
+          <iframe
+            src="https://www.google.com/maps?q=San%20Antonio%20de%20los%20Cobres%20Salta&output=embed"
+            width="100%"
+            height="260"
+            style="border:0; border-radius:16px; margin:12px 0;"
+            allowfullscreen=""
+            loading="lazy">
+          </iframe>
+
+          <strong>⚠️ IMPORTANTE</strong><br><br>
+
+          A estrada asfaltada termina em San Antonio de los Cobres.<br><br>
+          A partir deste ponto, os caminhos turísticos continuam por estradas de terra.<br><br>
+
+          Recomendamos:<br><br>
+          • abastecer antes de continuar a viagem<br>
+          • verificar os pneus<br>
+          • levar água e roupas quentes<br>
+          • consultar as condições climáticas<br>
+          • dirigir com cuidado<br><br>
+
+          <strong>🗺 Principais destinos:</strong><br><br>
+
+          🚂 <strong>Viaduto La Polvorilla</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Viaducto+La+Polvorilla" target="_blank">Abrir no Google Maps</a><br><br>
+
+          🧂 <strong>Salinas Grandes</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Salinas+Grandes+Jujuy" target="_blank">Abrir no Google Maps</a><br><br>
+
+          🏔️ <strong>La Poma</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=La+Poma+Salta" target="_blank">Abrir no Google Maps</a><br><br>
+
+          🇨🇱 <strong>Passo de Jama</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Paso+de+Jama" target="_blank">Abrir no Google Maps</a><br><br>
+
+          <strong>🏨 Hospedagem:</strong><br><br>
+          • Hotel de las Nubes<br>
+          • Pousadas locais<br>
+          • Hospedagens familiares<br><br>
+
+          <a href="https://www.google.com/maps/search/?api=1&query=hospedagem+San+Antonio+de+los+Cobres" target="_blank">Ver hospedagens</a><br><br>
+
+          <strong>🍽️ Lugares para comer:</strong><br><br>
+          • Restaurantes regionais<br>
+          • Comedores locais<br>
+          • Cafés e casas de comida<br><br>
+
+          <a href="https://www.google.com/maps/search/?api=1&query=restaurantes+San+Antonio+de+los+Cobres" target="_blank">Ver restaurantes</a>
+        `
+      },
+
+      fr: {
+        title: "Tourisme et orientation pour voyageurs",
+        html: `
+          <strong>📍 Vous êtes à San Antonio de los Cobres, Salta.</strong><br><br>
+
+          <iframe
+            src="https://www.google.com/maps?q=San%20Antonio%20de%20los%20Cobres%20Salta&output=embed"
+            width="100%"
+            height="260"
+            style="border:0; border-radius:16px; margin:12px 0;"
+            allowfullscreen=""
+            loading="lazy">
+          </iframe>
+
+          <strong>⚠️ IMPORTANT</strong><br><br>
+
+          La route goudronnée se termine à San Antonio de los Cobres.<br><br>
+          À partir de ce point, les routes touristiques continuent sur des chemins de terre.<br><br>
+
+          Nous recommandons :<br><br>
+          • faire le plein avant de continuer le voyage<br>
+          • vérifier les pneus<br>
+          • emporter de l’eau et des vêtements chauds<br>
+          • consulter les conditions météorologiques<br>
+          • conduire avec prudence<br><br>
+
+          <strong>🗺 Principales destinations :</strong><br><br>
+
+          🚂 <strong>Viaduc La Polvorilla</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Viaducto+La+Polvorilla" target="_blank">Ouvrir dans Google Maps</a><br><br>
+
+          🧂 <strong>Salinas Grandes</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Salinas+Grandes+Jujuy" target="_blank">Ouvrir dans Google Maps</a><br><br>
+
+          🏔️ <strong>La Poma</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=La+Poma+Salta" target="_blank">Ouvrir dans Google Maps</a><br><br>
+
+          🇨🇱 <strong>Col de Jama</strong><br>
+          <a href="https://www.google.com/maps/search/?api=1&query=Paso+de+Jama" target="_blank">Ouvrir dans Google Maps</a><br><br>
+
+          <strong>🏨 Hébergement :</strong><br><br>
+          • Hotel de las Nubes<br>
+          • Auberges locales<br>
+          • Hébergements familiaux<br><br>
+
+          <a href="https://www.google.com/maps/search/?api=1&query=hébergement+San+Antonio+de+los+Cobres" target="_blank">Voir les hébergements</a><br><br>
+
+          <strong>🍽️ Où manger :</strong><br><br>
+          • Restaurants régionaux<br>
+          • Cantines locales<br>
+          • Cafés et maisons de repas<br><br>
+
+          <a href="https://www.google.com/maps/search/?api=1&query=restaurants+San+Antonio+de+los+Cobres" target="_blank">Voir les restaurants</a>
+        `
+      }
+    };
+
+    const item = turismoContent[currentLang] || turismoContent.es;
+
+    document.getElementById("modalTitle").innerText = item.title;
+    document.getElementById("modalText").innerHTML = item.html;
     document.getElementById("modal").style.display = "flex";
+
     return;
   }
 
   const item = content[currentLang].modals[key];
+
   document.getElementById("modalTitle").innerText = item[0];
   document.getElementById("modalText").innerText = item[1];
   document.getElementById("modal").style.display = "flex";
