@@ -1,872 +1,329 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Asistente Virtual ECER</title>
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Truck, ShieldCheck, Mountain, MapPin, Phone, Mail, Menu, X, Fuel, Users, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+const translations = {
+  es: {
+    nav: ["Inicio", "Servicios", "Seguridad", "Flota", "Contacto"],
+    heroBadge: "Transporte y logística en la puna argentina",
+    heroTitle: "Cruz Andina",
+    heroSubtitle: "Vehículos 4x4 y logística minera en la puna salteña."
+    heroText:
+      "Desde San Antonio de los Cobres ofrecemos transporte de personal, logística, guía escolta y alquiler de camionetas 4x4 equipadas para minería y operaciones en altura.",
+    ctaPrimary: "Solicitar contacto",
+    ctaSecondary: "Ver servicios",
+    servicesTitle: "Nuestros servicios",
+    servicesSubtitle: "Soluciones pensadas para operar en caminos exigentes, zonas remotas y condiciones de altura.",
+    services: [
+      {
+        title: "Logística de cargas livianas",
+        text: "Traslado de cargas livianas entre ciudad, campamentos y proyectos mineros para cubrir necesidades operativas en la puna salteña.",
+      },
+      {
+        title: "Transporte de personal",
+        text: "Servicio de traslado con seguimiento satelital, internet Starlink y comunicación radial UHF/VHF para operaciones en altura.",
+      },
+      {
+        title: "Guía escolta",
+        text: "Acompañamiento operativo totalmente equipado con elementos de seguridad y prevención para rutas y caminos complejos.",
+      },
+      {
+        title: "Alquiler 4x4 Nissan XE",
+        text: "Alquiler diario, mensual o semestral de unidades equipadas para minería y operaciones de alta exigencia.",
+      },
+    ],
+    safetyTitle: "Seguridad como prioridad",
+    safetyText:
+      "Cada servicio se planifica con criterio operativo, responsabilidad y enfoque preventivo. La seguridad del personal, la unidad y la operación es parte central de nuestra forma de trabajar.",
+    safetyItems: ["Conductores responsables", "Control de unidades", "Planificación de rutas", "Respuesta ante imprevistos"],
+    fleetTitle: "Flota preparada para la operación",
+    fleetText:
+      "Nuestras unidades cuentan con equipamiento minero, barra antivuelco, balizas, matafuegos, kit reglamentario y preparación para operaciones exigentes en la puna.",
+    stats: [
+      { value: "4x4", label: "Vehículos preparados" },
+      { value: "STARLINK", label: "Conectividad satelital" },
+      { value: "UHF/VHF", label: "Comunicación radial" },
+    ],
+    contactTitle: "Contacto",
+    contactText: "Consultanos por servicios, disponibilidad de unidades o asistencia para operaciones en la puna.",
+    phone: "Teléfono / WhatsApp",
+    email: "Correo electrónico",
+    location: "San Antonio de los Cobres, Salta",
+    footer: "Cruz Andina — Transporte, logística y compromiso en altura.",
+  },
+  en: {
+    nav: ["Home", "Services", "Safety", "Fleet", "Contact"],
+    heroBadge: "Transport and logistics in the Argentine puna",
+    heroTitle: "Cruz Andina",
+    heroSubtitle: "We move operations with commitment, safety and real knowledge of the terrain.",
+    heroText:
+      "We provide transport, operational assistance and logistics solutions for companies, mining projects and high-altitude services.",
+    ctaPrimary: "Contact us",
+    ctaSecondary: "View services",
+    servicesTitle: "Our services",
+    servicesSubtitle: "Solutions designed for demanding roads, remote areas and high-altitude conditions.",
+    services: [
+      {
+        title: "Operational transport",
+        text: "Safe personnel transfer, logistics support and mobility for field operations.",
+      },
+      {
+        title: "Project assistance",
+        text: "Support for companies working in the puna, mining, energy and industrial services.",
+      },
+      {
+        title: "High-altitude logistics",
+        text: "Knowledge of routes, weather, distances and operational needs around San Antonio de los Cobres.",
+      },
+    ],
+    safetyTitle: "Safety first",
+    safetyText:
+      "Every service is planned with operational criteria, responsibility and prevention. The safety of people, vehicles and operations is central to how we work.",
+    safetyItems: ["Responsible drivers", "Vehicle checks", "Route planning", "Incident response"],
+    fleetTitle: "Fleet ready for operations",
+    fleetText:
+      "Vehicles prepared to support field work, with company identification and availability for scheduled services.",
+    stats: [
+      { value: "24/7", label: "Operational commitment" },
+      { value: "+3,700 m", label: "High-altitude experience" },
+      { value: "SAC", label: "Operating base" },
+    ],
+    contactTitle: "Contact",
+    contactText: "Ask us about services, vehicle availability or operational assistance in the puna.",
+    phone: "Phone / WhatsApp",
+    email: "Email",
+    location: "San Antonio de los Cobres, Salta",
+    footer: "Cruz Andina — Transport, logistics and commitment at altitude.",
+  },
+};
 
-  body {
+const scrollToId = (id) => {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+};
 
-  font-family: Arial, Helvetica, sans-serif;
-  min-height: 100vh;
-  color: #fff;
+export default function CruzAndinaPage() {
+  const [lang, setLang] = useState("es");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const t = translations[lang];
 
-  background:
-  linear-gradient(
-  rgba(0,25,60,0.22),
-  rgba(0,20,50,0.45)
-  ),
-  url("fondo-estacion.jpg");
+  const navIds = ["inicio", "servicios", "seguridad", "flota", "contacto"];
 
-  background-size: 100% auto;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-color: #002b5c;
+  return (
+    <main className="min-h-screen bg-neutral-950 text-white">
+      <section
+        id="inicio"
+        className="relative min-h-screen overflow-hidden bg-[linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.75)),url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80')] bg-cover bg-center"
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/20" />
 
+        <header className="relative z-20 mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8">
+          <button onClick={() => scrollToId("inicio")} className="flex items-center gap-3">
+            <div className="grid h-12 w-12 place-items-center rounded-2xl border border-white/25 bg-white/10 backdrop-blur">
+              <Mountain className="h-7 w-7" />
+            </div>
+            <div className="text-left">
+              <p className="text-xl font-black tracking-wide">CRUZ ANDINA</p>
+              <p className="text-xs uppercase tracking-[0.35em] text-white/65">Transporte</p>
+            </div>
+          </button>
+
+          <nav className="hidden items-center gap-7 md:flex">
+            {t.nav.map((item, index) => (
+              <button
+                key={item}
+                onClick={() => scrollToId(navIds[index])}
+                className="text-sm font-medium text-white/80 transition hover:text-white"
+              >
+                {item}
+              </button>
+            ))}
+          </nav>
+
+          <div className="hidden items-center gap-2 md:flex">
+            <button
+              onClick={() => setLang("es")}
+              className={`rounded-full px-3 py-1 text-sm ${lang === "es" ? "bg-white text-black" : "bg-white/10 text-white"}`}
+            >
+              ES
+            </button>
+            <button
+              onClick={() => setLang("en")}
+              className={`rounded-full px-3 py-1 text-sm ${lang === "en" ? "bg-white text-black" : "bg-white/10 text-white"}`}
+            >
+              EN
+            </button>
+          </div>
+
+          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? <X /> : <Menu />}
+          </button>
+        </header>
+
+        {menuOpen && (
+          <div className="relative z-30 mx-5 rounded-3xl border border-white/15 bg-black/80 p-5 backdrop-blur md:hidden">
+            <div className="grid gap-3">
+              {t.nav.map((item, index) => (
+                <button
+                  key={item}
+                  onClick={() => {
+                    scrollToId(navIds[index]);
+                    setMenuOpen(false);
+                  }}
+                  className="rounded-2xl px-4 py-3 text-left text-white/90 hover:bg-white/10"
+                >
+                  {item}
+                </button>
+              ))}
+              <div className="flex gap-2 pt-2">
+                <button onClick={() => setLang("es")} className="rounded-full bg-white px-4 py-2 text-black">ES</button>
+                <button onClick={() => setLang("en")} className="rounded-full bg-white/10 px-4 py-2 text-white">EN</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="relative z-10 mx-auto grid min-h-[calc(100vh-90px)] max-w-7xl items-center px-5 pb-20 md:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="max-w-3xl"
+          >
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white/90 backdrop-blur">
+              <MapPin className="h-4 w-4" />
+              {t.heroBadge}
+            </div>
+            <h1 className="text-5xl font-black leading-tight tracking-tight md:text-7xl">{t.heroTitle}</h1>
+            <p className="mt-5 text-2xl font-semibold text-white md:text-3xl">{t.heroSubtitle}</p>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-white/78">{t.heroText}</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button onClick={() => scrollToId("contacto")} className="rounded-2xl bg-white px-6 py-6 text-base font-bold text-black hover:bg-white/90">
+                {t.ctaPrimary} <ChevronRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button onClick={() => scrollToId("servicios")} variant="outline" className="rounded-2xl border-white/30 bg-white/10 px-6 py-6 text-base font-bold text-white hover:bg-white/20">
+                {t.ctaSecondary}
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="bg-neutral-950 px-5 py-12 md:px-8">
+        <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
+          {t.stats.map((stat) => (
+            <Card key={stat.label} className="rounded-3xl border-white/10 bg-white/[0.06] text-white shadow-xl">
+              <CardContent className="p-7">
+                <p className="text-4xl font-black">{stat.value}</p>
+                <p className="mt-2 text-white/65">{stat.label}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section id="servicios" className="bg-neutral-950 px-5 py-20 md:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <p className="text-sm font-bold uppercase tracking-[0.35em] text-white/45">Cruz Andina</p>
+            <h2 className="mt-3 text-4xl font-black md:text-5xl">{t.servicesTitle}</h2>
+            <p className="mt-4 text-lg leading-8 text-white/65">{t.servicesSubtitle}</p>
+          </div>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {[Truck, Users, Fuel].map((Icon, index) => (
+              <Card key={t.services[index].title} className="rounded-3xl border-white/10 bg-white/[0.06] text-white shadow-xl transition hover:-translate-y-1 hover:bg-white/[0.09]">
+                <CardContent className="p-7">
+                  <div className="mb-6 grid h-14 w-14 place-items-center rounded-2xl border border-white/15 bg-white/10">
+                    <Icon className="h-7 w-7" />
+                  </div>
+                  <h3 className="text-2xl font-black">{t.services[index].title}</h3>
+                  <p className="mt-4 leading-7 text-white/65">{t.services[index].text}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="seguridad" className="bg-white px-5 py-20 text-neutral-950 md:px-8">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-2">
+          <div>
+            <div className="mb-5 grid h-16 w-16 place-items-center rounded-3xl bg-neutral-950 text-white">
+              <ShieldCheck className="h-8 w-8" />
+            </div>
+            <h2 className="text-4xl font-black md:text-5xl">{t.safetyTitle}</h2>
+            <p className="mt-5 text-lg leading-8 text-neutral-600">{t.safetyText}</p>
+          </div>
+          <div className="grid gap-4">
+            {t.safetyItems.map((item) => (
+              <div key={item} className="flex items-center gap-4 rounded-3xl border border-neutral-200 bg-neutral-50 p-5">
+                <div className="grid h-11 w-11 place-items-center rounded-2xl bg-neutral-950 text-white">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <p className="text-lg font-bold">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="flota" className="bg-neutral-900 px-5 py-20 md:px-8">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-2">
+          <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-2xl">
+            <div className="aspect-[4/3] bg-[linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.45)),url('https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center" />
+          </div>
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.35em] text-white/45">Operación</p>
+            <h2 className="mt-3 text-4xl font-black md:text-5xl">{t.fleetTitle}</h2>
+            <p className="mt-5 text-lg leading-8 text-white/65">{t.fleetText}</p>
+            <div className="mt-8 rounded-3xl border border-white/10 bg-white/[0.06] p-6">
+              <p className="text-xl font-bold">San Antonio de los Cobres · Salta</p>
+              <p className="mt-2 text-white/60">Base estratégica para operaciones en ruta, altura y proyectos de la región.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contacto" className="bg-neutral-950 px-5 py-20 md:px-8">
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-white/[0.06] p-8 md:p-12">
+          <div className="grid gap-10 md:grid-cols-2">
+            <div>
+              <h2 className="text-4xl font-black md:text-5xl">{t.contactTitle}</h2>
+              <p className="mt-5 text-lg leading-8 text-white/65">{t.contactText}</p>
+            </div>
+            <div className="grid gap-4">
+              <div className="flex items-center gap-4 rounded-3xl bg-white/10 p-5">
+                <Phone className="h-6 w-6" />
+                <div>
+                  <p className="text-sm text-white/50">{t.phone}</p>
+                  <p className="font-bold">+54 9 387 000 0000</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 rounded-3xl bg-white/10 p-5">
+                <Mail className="h-6 w-6" />
+                <div>
+                  <p className="text-sm text-white/50">{t.email}</p>
+                  <p className="font-bold">contacto@cruzandina.com</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 rounded-3xl bg-white/10 p-5">
+                <MapPin className="h-6 w-6" />
+                <div>
+                  <p className="text-sm text-white/50">Base</p>
+                  <p className="font-bold">{t.location}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t border-white/10 bg-black px-5 py-8 text-center text-white/55 md:px-8">
+        <p>{t.footer}</p>
+      </footer>
+    </main>
+  );
 }
-    .container {
-      width: 92%;
-      max-width: 1180px;
-      margin: auto;
-      padding: 24px 0 40px;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 35px;
-    }
-
-    .brand {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .brand h2 {
-      font-size: 32px;
-      letter-spacing: 1px;
-    }
-
-    .brand span {
-      font-size: 14px;
-      opacity: 0.85;
-    }
-
-    select {
-      background: rgba(255,255,255,0.14);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.35);
-      padding: 12px 14px;
-      border-radius: 14px;
-      font-weight: bold;
-      outline: none;
-    }
-
-    option {
-      color: #000;
-    }
-
-    .hero {
-      max-width: 680px;
-      margin-bottom: 42px;
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      line-height: 1.1;
-      margin-bottom: 18px;
-    }
-
-    .hero p {
-      font-size: 18px;
-      line-height: 1.5;
-      opacity: 0.95;
-      margin-bottom: 22px;
-    }
-
-    .search {
-      background: rgba(255,255,255,0.16);
-      border: 1px solid rgba(255,255,255,0.25);
-      backdrop-filter: blur(10px);
-      border-radius: 18px;
-      padding: 16px 18px;
-      max-width: 420px;
-      color: #fff;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-    }
-
-    .section-title {
-      font-size: 22px;
-      margin: 28px 0 18px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 16px;
-    }
-
-    .grid-info {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .card {
-     background: rgba(255,255,255,0.04);
-
-     backdrop-filter: blur(4px);
-     -webkit-backdrop-filter: blur(4px);
-
-     border: 1px solid rgba(255,255,255,0.10);
-
-     border-radius: 22px;
-
-     padding: 24px;
-
-     transition: 0.3s ease;
-
-     box-shadow:
-     0 8px 24px rgba(0,0,0,0.18);
-    }
-
-    .card:hover {
-    transform: translateY(-6px);
-
-    background: rgba(255,255,255,0.08);
-
-    border: 1px solid rgba(255,255,255,0.18);
-
-    box-shadow:
-    0 12px 32px rgba(0,0,0,0.28);
-    }
-
-    .icon {
-      font-size: 36px;
-      margin-bottom: 16px;
-    }
-
-    .card h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-
-    .card p {
-      font-size: 14px;
-      line-height: 1.4;
-      opacity: 0.9;
-    }
-
-    .status {
-      margin-top: 26px;
-      background: rgba(0,0,0,0.28);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 18px;
-      padding: 18px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      backdrop-filter: blur(10px);
-    }
-
-    .status-item {
-      background: rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 14px;
-    }
-
-    .green {
-      color: #4cff7b;
-      font-weight: bold;
-    }
-
-    .red {
-      color: #ff6969;
-      font-weight: bold;
-    }
-
-    .assistant-box {
-      margin-top: 32px;
-      background: rgba(0, 55, 130, 0.45);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 22px;
-      padding: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 18px;
-      backdrop-filter: blur(10px);
-    }
-
-    .assistant-box h3 {
-      font-size: 24px;
-      margin-bottom: 8px;
-    }
-
-    .assistant-box p {
-      opacity: 0.9;
-      line-height: 1.4;
-    }
-
-    .btn {
-      background: #006cff;
-      color: #fff;
-      border: none;
-      border-radius: 16px;
-      padding: 16px 24px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      min-width: 220px;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.72);
-      justify-content: center;
-      align-items: center;
-      padding: 18px;
-      z-index: 99;
-    }
-
-   .modal-content {
-  width: 100%;
-  max-width: 560px;
-  max-height: 90vh;
-  overflow-y: auto;
-  background: #062a56;
-  border: 1px solid rgba(255,255,255,0.22);
-  border-radius: 22px;
-  padding: 26px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-    }
-
-    .modal-content h2 {
-      margin-bottom: 14px;
-    }
-
-    .modal-content p {
-      line-height: 1.6;
-      opacity: 0.95;
-      white-space: pre-line;
-    }
-
-    .close {
-      margin-top: 22px;
-      width: 100%;
-      background: #fff;
-      color: #003b7a;
-      border: none;
-      padding: 14px;
-      border-radius: 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    footer {
-      margin-top: 34px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(255,255,255,0.18);
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      font-size: 14px;
-      opacity: 0.9;
-    }
-
-    @media (max-width: 900px) {
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .grid-info {
-        grid-template-columns: 1fr;
-      }
-
-      .status {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .hero h1 {
-        font-size: 38px;
-      }
-
-      .assistant-box {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .btn {
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 520px) {
-      header {
-        align-items: flex-start;
-        gap: 16px;
-        flex-direction: column;
-      }
-
-      .brand h2 {
-        font-size: 26px;
-      }
-
-      .hero h1 {
-        font-size: 34px;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .status {
-        grid-template-columns: 1fr;
-      }
-
-      body {
-        background-attachment: scroll;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <h2>YPF</h2>
-        <span>ECER S.A.C. · San Antonio de los Cobres</span>
-      </div>
-
-      <select id="language" onchange="changeLanguage()">
-        <option value="es">🇦🇷 Español</option>
-        <option value="en">🇬🇧 English</option>
-        <option value="pt">🇧🇷 Português</option>
-        <option value="fr">🇫🇷 Français</option>
-      </select>
-    </header>
-
-    <section class="hero">
-      <h1 id="mainTitle">¡Bienvenido!<br>Asistente Virtual ECER</h1>
-      <p id="mainText">Tu guía inteligente para combustible, rutas, turismo y servicios durante tu viaje.</p>
-      <div class="search" id="searchText">🔎 ¿En qué podemos ayudarte?</div>
-    </section>
-
-    <h2 class="section-title" id="quickTitle">Accesos rápidos</h2>
-
-    <section class="grid">
-      <div class="card" onclick="openModal('combustibles')">
-        <div class="icon">⛽</div>
-        <h3 id="fuelTitle">Combustibles</h3>
-        <p id="fuelText">Tipos disponibles y estado operativo.</p>
-      </div>
-
-      <div class="card" onclick="openModal('horarios')">
-        <div class="icon">🕒</div>
-        <h3 id="hoursTitle">Horarios</h3>
-        <p id="hoursText">Atención y servicios.</p>
-      </div>
-
-      <div class="card" onclick="openModal('turismo')">
-        <div class="icon">🏔️</div>
-        <h3 id="tourTitle">Turismo</h3>
-        <p id="tourText">Recomendaciones para visitantes.</p>
-      </div>
-
-      <div class="card" onclick="openModal('rutas')">
-        <div class="icon">🛣️</div>
-        <h3 id="routesTitle">Rutas</h3>
-        <p id="routesText">Información vial orientativa.</p>
-      </div>
-
-      <div class="card" onclick="openModal('pagos')">
-        <div class="icon">💳</div>
-        <h3 id="payTitle">Medios de pago</h3>
-        <p id="payText">Formas de pago aceptadas.</p>
-      </div>
-
-      <div class="card" onclick="openModal('emergencias')">
-        <div class="icon">🚑</div>
-        <h3 id="emergencyTitle">Emergencias</h3>
-        <p id="emergencyText">Contactos y asistencia.</p>
-      </div>
-    </section>
-
-    <h2 class="section-title" id="infoTitle">Información y servicios</h2>
-
-    <section class="grid-info">
-      <div class="card" onclick="openModal('estacion')">
-        <div class="icon">🏪</div>
-        <h3>Nuestra estación</h3>
-        <p>Servicios, instalaciones y atención al cliente.</p>
-      </div>
-
-      <div class="card" onclick="openModal('shop')">
-        <div class="icon">🛒</div>
-        <h3>Shop</h3>
-        <p>Productos, bebidas, lubricantes y más.</p>
-      </div>
-
-      <div class="card" onclick="openModal('contacto')">
-        <div class="icon">📞</div>
-        <h3>Contacto</h3>
-        <p>Comunicate con personal de la estación.</p>
-      </div>
-    </section>
-
-    <h2 class="section-title">Estado actual de la estación</h2>
-
-    <section class="status">
-      <div class="status-item">⛽ Infinia<br><span class="green">● Disponible</span></div>
-      <div class="status-item">⛽ Nafta Súper<br><span class="green">● Disponible</span></div>
-      <div class="status-item">⛽ Infinia Diesel<br><span class="green">● Disponible</span></div>
-      <div class="status-item">⛽ Diesel 500<br><span class="green">● Disponible</span></div>
-    </section>
-
-    <section class="assistant-box">
-      <div>
-        <h3>🤖 ¿Necesitás ayuda?</h3>
-        <p>Este asistente brinda información rápida para turistas, clientes y transportistas.</p>
-      </div>
-      <button class="btn" onclick="openModal('ayuda')">Preguntarle al asistente</button>
-    </section>
-
-    <footer>
-      <div>
-        <strong>ECER - Estación de Servicio</strong><br>
-        San Antonio de los Cobres, Salta, Argentina
-      </div>
-      <div>
-        Tu viaje, nuestra energía.
-      </div>
-    </footer>
-  </div>
-
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <h2 id="modalTitle"></h2>
-      <p id="modalText"></p>
-      <button class="close" onclick="closeModal()">Cerrar</button>
-    </div>
-  </div>
-
-  <script>
-    let currentLang = "es";
-
-    const content = {
-      es: {
-        mainTitle: "¡Bienvenido!<br>Asistente Virtual ECER",
-        mainText: "Tu guía inteligente para combustible, rutas, turismo y servicios durante tu viaje.",
-        searchText: "🔎 ¿En qué podemos ayudarte?",
-        quickTitle: "Accesos rápidos",
-        infoTitle: "Información y servicios",
-        fuelTitle: "Combustibles",
-        fuelText: "Tipos disponibles y estado operativo.",
-        hoursTitle: "Horarios",
-        hoursText: "Atención y servicios.",
-        tourTitle: "Turismo",
-        tourText: "Recomendaciones para visitantes.",
-        routesTitle: "Rutas",
-        routesText: "Información vial orientativa.",
-        payTitle: "Medios de pago",
-        payText: "Formas de pago aceptadas.",
-        emergencyTitle: "Emergencias",
-        emergencyText: "Contactos y asistencia.",
-        modals: {
-          combustibles: ["Combustibles disponibles", "⛽ <strong>Trabajamos con combustibles YPF:</strong><br><br>🛢️ <strong>Gas Oil</strong><br><br><span style='color:#35d04f; font-weight:bold;'>⬤ INFINIA DIESEL</span><br><br><span style='color:#ffd43b; font-weight:bold;'>⬤ DIESEL 500</span><br><br>🚗 <strong>Nafta / Gasolina</strong><br><br><span style='color:#F3D7A5; font-weight:bold;'>⬤ INFINIA NAFTA</span><br><br><span style='color:#4da3ff; font-weight:bold;'>⬤ NAFTA SUPER</span><br><br>⭐ <strong>Recomendamos utilizar combustibles INFINIA para viajes de larga distancia, altura y caminos de tierra.</strong><br><br>Los combustibles INFINIA brindan:<br><br>• mejor rendimiento<br>• mayor protección del motor<br>• mejor respuesta en altura<br>• limpieza de inyectores y sistema de combustión<br><br>⚠️ La disponibilidad puede variar según stock operativo.<br><br>🏔️ <strong>Recomendación para viajeros:</strong><br><br>Si vas hacia:<br><br>• Viaducto La Polvorilla<br>• Salinas Grandes<br>• La Poma<br>• Paso de Jama<br><br>Recomendamos cargar combustible antes de salir de San Antonio de los Cobres."],
-          horarios: ["Horarios", "Atención todos los días de 06:00 a 22:00 hs. No contamos con turno nocturno."],
-          turismo: ["Turismo", "Recomendamos cargar combustible antes de continuar viaje, llevar agua, abrigo y documentación. Por la altura, evitá esfuerzos si presentás malestar."],
-          rutas: ["Rutas", "Consultá siempre el estado de la ruta antes de continuar viaje. En época de nieve o lluvia, circulá con extrema precaución."],
-          pagos: ["Medios de pago", "Aceptamos efectivo, tarjetas, QR/App YPF, cuenta corriente autorizada e YPF Ruta sujeto a disponibilidad del sistema."],
-          emergencias: ["Emergencias", "Ante una emergencia, solicitá ayuda inmediata al personal de la estación. También podés comunicarte con policía, hospital o bomberos de la zona."],
-          estacion: ["Nuestra estación", "ECER S.A.C. brinda servicio de combustible, atención al viajero, productos YPF y asistencia básica para turistas y transportistas."],
-          shop: ["Shop", "Contamos con productos, bebidas, lubricantes, refrigerantes, agua destilada y artículos para el viaje, sujetos a stock disponible."],
-          contacto: ["Contacto", "Para consultas especiales, dirigite al personal de playa o al sector administrativo de la estación."],
-          ayuda: ["Asistente Virtual", "Seleccioná una opción del menú principal para recibir información rápida. Próximamente podremos sumar WhatsApp, mapas, clima y consultas automáticas."]
-        }
-      }
-    };
-
-    content.en = {
-  mainTitle: "Welcome!<br>ECER Virtual Assistant",
-  mainText: "Your smart guide for fuel, routes, tourism and services during your trip.",
-  searchText: "🔎 How can we help you?",
-  quickTitle: "Quick access",
-  infoTitle: "Information and services",
-  fuelTitle: "Fuel",
-  fuelText: "Available fuel types and operational status.",
-  hoursTitle: "Opening hours",
-  hoursText: "Service and assistance.",
-  tourTitle: "Tourism",
-  tourText: "Recommendations for visitors.",
-  routesTitle: "Routes",
-  routesText: "Road information.",
-  payTitle: "Payment methods",
-  payText: "Accepted payment methods.",
-  emergencyTitle: "Emergencies",
-  emergencyText: "Contacts and assistance.",
-  modals: {
-    combustibles: ["Available fuels", "⛽ <strong>We work with YPF fuels:</strong><br><br>🛢️ <strong>Diesel</strong><br><br><span style='color:#35d04f; font-weight:bold;'>⬤ INFINIA DIESEL</span><br><br><span style='color:#ffd43b; font-weight:bold;'>⬤ DIESEL 500</span><br><br>🚗 <strong>Gasoline</strong><br><br><span style='color:#F3D7A5; font-weight:bold;'>⬤ INFINIA GASOLINE</span><br><br><span style='color:#4da3ff; font-weight:bold;'>⬤ SUPER GASOLINE</span><br><br>⭐ <strong>We recommend using INFINIA fuels for long-distance trips, altitude and dirt roads.</strong><br><br>INFINIA fuels provide:<br><br>• better performance<br>• greater engine protection<br>• better altitude response<br>• injector and combustion system cleaning<br><br>⚠️ Availability may vary depending on operational stock.<br><br>🏔️ <strong>Traveler recommendation:</strong><br><br>If you are traveling to:<br><br>• La Polvorilla Viaduct<br>• Salinas Grandes<br>• La Poma<br>• Jama Pass<br><br>We recommend refueling before leaving San Antonio de los Cobres."],
-    horarios: ["Opening hours", "Open daily from 6:00 AM to 10:00 PM. No night shift available."],
-    turismo: ["Tourism", "We recommend refueling before continuing your trip. Carry water, warm clothes and documents due to altitude conditions."],
-    rutas: ["Routes", "Always check road conditions before continuing your trip. Drive carefully during snow or rain."],
-    pagos: ["Payment methods", "We accept cash, cards, QR/YPF App and authorized company accounts."],
-    emergencias: ["Emergencies", "In case of emergency, contact station staff immediately."],
-    estacion: ["Our station", "ECER S.A.C. provides fuel service, tourist assistance and YPF products."],
-    shop: ["Shop", "Products, beverages, lubricants and travel supplies available."],
-    contacto: ["Contact", "Please contact station staff for additional assistance."],
-    ayuda: ["Virtual Assistant", "Select an option from the menu to receive quick information."]
-  }
-};
-
-content.pt = {
-  mainTitle: "Bem-vindo!<br>Assistente Virtual ECER",
-  mainText: "Seu guia inteligente para combustível, rotas, turismo e serviços durante sua viagem.",
-  searchText: "🔎 Como podemos ajudá-lo?",
-  quickTitle: "Acessos rápidos",
-  infoTitle: "Informações e serviços",
-  fuelTitle: "Combustíveis",
-  fuelText: "Tipos disponíveis e status operacional.",
-  hoursTitle: "Horários",
-  hoursText: "Atendimento e serviços.",
-  tourTitle: "Turismo",
-  tourText: "Recomendações para visitantes.",
-  routesTitle: "Rotas",
-  routesText: "Informações rodoviárias.",
-  payTitle: "Pagamentos",
-  payText: "Métodos de pagamento aceitos.",
-  emergencyTitle: "Emergências",
-  emergencyText: "Contatos e assistência.",
-  modals: {
-    combustibles: ["Combustíveis disponíveis", "⛽ <strong>Trabalhamos com combustíveis YPF:</strong><br><br>🛢️ <strong>Diesel</strong><br><br><span style='color:#35d04f; font-weight:bold;'>⬤ INFINIA DIESEL</span><br><br><span style='color:#ffd43b; font-weight:bold;'>⬤ DIESEL 500</span><br><br>🚗 <strong>Nafta / Gasolina</strong><br><br><span style='color:#F3D7A5; font-weight:bold;'>⬤ INFINIA NAFTA</span><br><br><span style='color:#4da3ff; font-weight:bold;'>⬤ NAFTA SUPER</span><br><br>⭐ <strong>Recomendamos usar combustíveis INFINIA para viagens longas, altitude e caminhos de terra.</strong><br><br>Os combustíveis INFINIA oferecem:<br><br>• melhor rendimento<br>• maior proteção do motor<br>• melhor resposta em altitude<br>• limpeza de injetores e sistema de combustão<br><br>⚠️ A disponibilidade pode variar conforme o estoque operacional.<br><br>🏔️ <strong>Recomendação para viajantes:</strong><br><br>Se você vai para:<br><br>• Viaduto La Polvorilla<br>• Salinas Grandes<br>• La Poma<br>• Passo de Jama<br><br>Recomendamos abastecer antes de sair de San Antonio de los Cobres."],
-    horarios: ["Horários", "Atendimento diário das 06:00 às 22:00."],
-    turismo: ["Turismo", "Recomendamos abastecer antes de continuar sua viagem."],
-    rutas: ["Rotas", "Verifique sempre as condições da estrada antes de viajar."],
-    pagos: ["Pagamentos", "Aceitamos dinheiro, cartões, QR/App YPF e contas autorizadas."],
-    emergencias: ["Emergências", "Em caso de emergência, entre em contato com a equipe da estação."],
-    estacion: ["Nossa estação", "Serviço de combustível e assistência ao viajante."],
-    shop: ["Loja", "Produtos, bebidas e suprimentos para viagem."],
-    contacto: ["Contato", "Entre em contato com a equipe da estação."],
-    ayuda: ["Assistente Virtual", "Selecione uma opção do menu."]
-  }
-};
-
-content.fr = {
-  mainTitle: "Bienvenue !<br>Assistant Virtuel ECER",
-  mainText: "Votre guide intelligent pour carburant, routes, tourisme et services pendant votre voyage.",
-  searchText: "🔎 Comment pouvons-nous vous aider ?",
-  quickTitle: "Accès rapides",
-  infoTitle: "Informations et services",
-  fuelTitle: "Carburants",
-  fuelText: "Types disponibles et état opérationnel.",
-  hoursTitle: "Horaires",
-  hoursText: "Service et assistance.",
-  tourTitle: "Tourisme",
-  tourText: "Recommandations pour les visiteurs.",
-  routesTitle: "Routes",
-  routesText: "Informations routières.",
-  payTitle: "Paiements",
-  payText: "Moyens de paiement acceptés.",
-  emergencyTitle: "Urgences",
-  emergencyText: "Contacts et assistance.",
-  modals: {
-    combustibles: ["Carburants disponibles", "⛽ <strong>Nous travaillons avec des carburants YPF :</strong><br><br>🛢️ <strong>Diesel</strong><br><br><span style='color:#35d04f; font-weight:bold;'>⬤ INFINIA DIESEL</span><br><br><span style='color:#ffd43b; font-weight:bold;'>⬤ DIESEL 500</span><br><br>🚗 <strong>Essence</strong><br><br><span style='color:#F3D7A5; font-weight:bold;'>⬤ INFINIA ESSENCE</span><br><br><span style='color:#4da3ff; font-weight:bold;'>⬤ ESSENCE SUPER</span><br><br>⭐ <strong>Nous recommandons les carburants INFINIA pour les longs trajets, l’altitude et les chemins de terre.</strong><br><br>Les carburants INFINIA offrent :<br><br>• un meilleur rendement<br>• une meilleure protection du moteur<br>• une meilleure réponse en altitude<br>• le nettoyage des injecteurs et du système de combustion<br><br>⚠️ La disponibilité peut varier selon le stock opérationnel.<br><br>🏔️ <strong>Recommandation aux voyageurs :</strong><br><br>Si vous allez vers :<br><br>• Viaduc La Polvorilla<br>• Salinas Grandes<br>• La Poma<br>• Col de Jama<br><br>Nous recommandons de faire le plein avant de quitter San Antonio de los Cobres."],
-    horarios: ["Horaires", "Ouvert tous les jours de 06h00 à 22h00."],
-    turismo: ["Tourisme", "Nous recommandons de faire le plein avant de continuer votre voyage."],
-    rutas: ["Routes", "Vérifiez toujours les conditions routières avant de voyager."],
-    pagos: ["Paiements", "Nous acceptons espèces, cartes et QR/App YPF."],
-    emergencias: ["Urgences", "En cas d'urgence, contactez immédiatement le personnel."],
-    estacion: ["Notre station", "Service de carburant et assistance aux voyageurs."],
-    shop: ["Boutique", "Produits, boissons et fournitures de voyage."],
-    contacto: ["Contact", "Veuillez contacter le personnel de la station."],
-    ayuda: ["Assistant Virtuel", "Sélectionnez une option du menu."]
-  }
-};
-
-    function changeLanguage() {
-      currentLang = document.getElementById("language").value;
-      const t = content[currentLang];
-
-      document.getElementById("mainTitle").innerHTML = t.mainTitle;
-      document.getElementById("mainText").innerText = t.mainText;
-      document.getElementById("searchText").innerText = t.searchText;
-      document.getElementById("quickTitle").innerText = t.quickTitle;
-      document.getElementById("infoTitle").innerText = t.infoTitle;
-      document.getElementById("fuelTitle").innerText = t.fuelTitle;
-      document.getElementById("fuelText").innerText = t.fuelText;
-      document.getElementById("hoursTitle").innerText = t.hoursTitle;
-      document.getElementById("hoursText").innerText = t.hoursText;
-      document.getElementById("tourTitle").innerText = t.tourTitle;
-      document.getElementById("tourText").innerText = t.tourText;
-      document.getElementById("routesTitle").innerText = t.routesTitle;
-      document.getElementById("routesText").innerText = t.routesText;
-      document.getElementById("payTitle").innerText = t.payTitle;
-      document.getElementById("payText").innerText = t.payText;
-      document.getElementById("emergencyTitle").innerText = t.emergencyTitle;
-      document.getElementById("emergencyText").innerText = t.emergencyText;
-    }
-function openModal(key) {
-
-  if (key === "turismo") {
-
-    const turismoContent = {
-      es: {
-        title: "Turismo y orientación para viajeros",
-        html: `
-          <strong>📍 Usted se encuentra en San Antonio de los Cobres, Salta.</strong><br><br>
-
-          <iframe
-            src="https://www.google.com/maps?q=San%20Antonio%20de%20los%20Cobres%20Salta&output=embed"
-            width="100%"
-            height="260"
-            style="border:0; border-radius:16px; margin:12px 0;"
-            allowfullscreen=""
-            loading="lazy">
-          </iframe>
-
-          <strong>⚠️ IMPORTANTE</strong><br><br>
-
-          En San Antonio de los Cobres finaliza la ruta asfaltada.<br><br>
-          Desde este punto, todos los caminos turísticos continúan por tierra.<br><br>
-
-          Recomendamos:<br><br>
-          • cargar combustible antes de continuar viaje<br>
-          • revisar neumáticos<br>
-          • llevar agua y abrigo<br>
-          • consultar estado climático<br>
-          • circular con precaución<br><br>
-
-          <strong>🗺 Destinos principales:</strong><br><br>
-
-          🚂 <strong>Viaducto La Polvorilla</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Viaducto+La+Polvorilla" target="_blank">Abrir en Google Maps</a><br><br>
-
-          🧂 <strong>Salinas Grandes</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Salinas+Grandes+Jujuy" target="_blank">Abrir en Google Maps</a><br><br>
-
-          🏔️ <strong>La Poma</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=La+Poma+Salta" target="_blank">Abrir en Google Maps</a><br><br>
-
-          🇨🇱 <strong>Paso de Jama</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Paso+de+Jama" target="_blank">Abrir en Google Maps</a><br><br>
-
-          <strong>🏨 Alojamiento:</strong><br><br>
-          • Hotel de las Nubes<br>
-          • Hosterías locales<br>
-          • Hospedajes familiares<br><br>
-
-          <a href="https://www.google.com/maps/search/?api=1&query=alojamiento+San+Antonio+de+los+Cobres" target="_blank">Ver alojamientos</a><br><br>
-
-          <strong>🍽️ Lugares para comer:</strong><br><br>
-          • Restaurantes regionales<br>
-          • Comedores locales<br>
-          • Cafeterías y casas de comida<br><br>
-
-          <a href="https://www.google.com/maps/search/?api=1&query=restaurantes+San+Antonio+de+los+Cobres" target="_blank">Ver restaurantes</a>
-        `
-      },
-
-      en: {
-        title: "Tourism and travel guidance",
-        html: `
-          <strong>📍 You are in San Antonio de los Cobres, Salta.</strong><br><br>
-
-          <iframe
-            src="https://www.google.com/maps?q=San%20Antonio%20de%20los%20Cobres%20Salta&output=embed"
-            width="100%"
-            height="260"
-            style="border:0; border-radius:16px; margin:12px 0;"
-            allowfullscreen=""
-            loading="lazy">
-          </iframe>
-
-          <strong>⚠️ IMPORTANT</strong><br><br>
-
-          The paved road ends in San Antonio de los Cobres.<br><br>
-          From this point onward, tourist roads continue as dirt roads.<br><br>
-
-          We recommend:<br><br>
-          • refueling before continuing your trip<br>
-          • checking your tires<br>
-          • carrying water and warm clothing<br>
-          • checking weather conditions<br>
-          • driving carefully<br><br>
-
-          <strong>🗺 Main destinations:</strong><br><br>
-
-          🚂 <strong>La Polvorilla Viaduct</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Viaducto+La+Polvorilla" target="_blank">Open in Google Maps</a><br><br>
-
-          🧂 <strong>Salinas Grandes</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Salinas+Grandes+Jujuy" target="_blank">Open in Google Maps</a><br><br>
-
-          🏔️ <strong>La Poma</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=La+Poma+Salta" target="_blank">Open in Google Maps</a><br><br>
-
-          🇨🇱 <strong>Jama Pass</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Paso+de+Jama" target="_blank">Open in Google Maps</a><br><br>
-
-          <strong>🏨 Accommodation:</strong><br><br>
-          • Hotel de las Nubes<br>
-          • Local hostels<br>
-          • Family lodgings<br><br>
-
-          <a href="https://www.google.com/maps/search/?api=1&query=accommodation+San+Antonio+de+los+Cobres" target="_blank">View accommodation</a><br><br>
-
-          <strong>🍽️ Places to eat:</strong><br><br>
-          • Regional restaurants<br>
-          • Local diners<br>
-          • Cafés and food houses<br><br>
-
-          <a href="https://www.google.com/maps/search/?api=1&query=restaurants+San+Antonio+de+los+Cobres" target="_blank">View restaurants</a>
-        `
-      },
-
-      pt: {
-        title: "Turismo e orientação para viajantes",
-        html: `
-          <strong>📍 Você está em San Antonio de los Cobres, Salta.</strong><br><br>
-
-          <iframe
-            src="https://www.google.com/maps?q=San%20Antonio%20de%20los%20Cobres%20Salta&output=embed"
-            width="100%"
-            height="260"
-            style="border:0; border-radius:16px; margin:12px 0;"
-            allowfullscreen=""
-            loading="lazy">
-          </iframe>
-
-          <strong>⚠️ IMPORTANTE</strong><br><br>
-
-          A estrada asfaltada termina em San Antonio de los Cobres.<br><br>
-          A partir deste ponto, os caminhos turísticos continuam por estradas de terra.<br><br>
-
-          Recomendamos:<br><br>
-          • abastecer antes de continuar a viagem<br>
-          • verificar os pneus<br>
-          • levar água e roupas quentes<br>
-          • consultar as condições climáticas<br>
-          • dirigir com cuidado<br><br>
-
-          <strong>🗺 Principais destinos:</strong><br><br>
-
-          🚂 <strong>Viaduto La Polvorilla</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Viaducto+La+Polvorilla" target="_blank">Abrir no Google Maps</a><br><br>
-
-          🧂 <strong>Salinas Grandes</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Salinas+Grandes+Jujuy" target="_blank">Abrir no Google Maps</a><br><br>
-
-          🏔️ <strong>La Poma</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=La+Poma+Salta" target="_blank">Abrir no Google Maps</a><br><br>
-
-          🇨🇱 <strong>Passo de Jama</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Paso+de+Jama" target="_blank">Abrir no Google Maps</a><br><br>
-
-          <strong>🏨 Hospedagem:</strong><br><br>
-          • Hotel de las Nubes<br>
-          • Pousadas locais<br>
-          • Hospedagens familiares<br><br>
-
-          <a href="https://www.google.com/maps/search/?api=1&query=hospedagem+San+Antonio+de+los+Cobres" target="_blank">Ver hospedagens</a><br><br>
-
-          <strong>🍽️ Lugares para comer:</strong><br><br>
-          • Restaurantes regionais<br>
-          • Comedores locais<br>
-          • Cafés e casas de comida<br><br>
-
-          <a href="https://www.google.com/maps/search/?api=1&query=restaurantes+San+Antonio+de+los+Cobres" target="_blank">Ver restaurantes</a>
-        `
-      },
-
-      fr: {
-        title: "Tourisme et orientation pour voyageurs",
-        html: `
-          <strong>📍 Vous êtes à San Antonio de los Cobres, Salta.</strong><br><br>
-
-          <iframe
-            src="https://www.google.com/maps?q=San%20Antonio%20de%20los%20Cobres%20Salta&output=embed"
-            width="100%"
-            height="260"
-            style="border:0; border-radius:16px; margin:12px 0;"
-            allowfullscreen=""
-            loading="lazy">
-          </iframe>
-
-          <strong>⚠️ IMPORTANT</strong><br><br>
-
-          La route goudronnée se termine à San Antonio de los Cobres.<br><br>
-          À partir de ce point, les routes touristiques continuent sur des chemins de terre.<br><br>
-
-          Nous recommandons :<br><br>
-          • faire le plein avant de continuer le voyage<br>
-          • vérifier les pneus<br>
-          • emporter de l’eau et des vêtements chauds<br>
-          • consulter les conditions météorologiques<br>
-          • conduire avec prudence<br><br>
-
-          <strong>🗺 Principales destinations :</strong><br><br>
-
-          🚂 <strong>Viaduc La Polvorilla</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Viaducto+La+Polvorilla" target="_blank">Ouvrir dans Google Maps</a><br><br>
-
-          🧂 <strong>Salinas Grandes</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Salinas+Grandes+Jujuy" target="_blank">Ouvrir dans Google Maps</a><br><br>
-
-          🏔️ <strong>La Poma</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=La+Poma+Salta" target="_blank">Ouvrir dans Google Maps</a><br><br>
-
-          🇨🇱 <strong>Col de Jama</strong><br>
-          <a href="https://www.google.com/maps/search/?api=1&query=Paso+de+Jama" target="_blank">Ouvrir dans Google Maps</a><br><br>
-
-          <strong>🏨 Hébergement :</strong><br><br>
-          • Hotel de las Nubes<br>
-          • Auberges locales<br>
-          • Hébergements familiaux<br><br>
-
-          <a href="https://www.google.com/maps/search/?api=1&query=hébergement+San+Antonio+de+los+Cobres" target="_blank">Voir les hébergements</a><br><br>
-
-          <strong>🍽️ Où manger :</strong><br><br>
-          • Restaurants régionaux<br>
-          • Cantines locales<br>
-          • Cafés et maisons de repas<br><br>
-
-          <a href="https://www.google.com/maps/search/?api=1&query=restaurants+San+Antonio+de+los+Cobres" target="_blank">Voir les restaurants</a>
-        `
-      }
-    };
-
-    const item = turismoContent[currentLang] || turismoContent.es;
-
-    document.getElementById("modalTitle").innerText = item.title;
-    document.getElementById("modalText").innerHTML = item.html;
-    document.getElementById("modal").style.display = "flex";
-
-    return;
-  }
-
-  const item = content[currentLang].modals[key];
-
-  document.getElementById("modalTitle").innerText = item[0];
-  document.getElementById("modalText").innerHTML = item[1];
-  document.getElementById("modal").style.display = "flex";
-}
-
-    function closeModal() {
-      document.getElementById("modal").style.display = "none";
-    }
-  </script>
-</body>
-</html>
